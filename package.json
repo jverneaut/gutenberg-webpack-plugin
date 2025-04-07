@@ -1,0 +1,26 @@
+{
+  "name": "@jverneaut/gutenberg-webpack-plugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [
+    "Gutenberg",
+    "WordPress",
+    "Webpack"
+  ],
+  "author": "Julien Verneaut <contact@julienverneaut.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jverneaut/gutenberg-webpack-plugin.git"
+  },
+  "description": "A lightweight, developer-friendly alternative to @wordpress/scripts that simplifies the setup and build process for custom Gutenberg blocks.",
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "@wordpress/dependency-extraction-webpack-plugin": "^6.21.0",
+    "copy-webpack-plugin": "^13.0.0",
+    "glob": "^11.0.1"
+  }
+}
