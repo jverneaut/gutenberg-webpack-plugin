@@ -154,6 +154,7 @@ class GutenbergWebpackPlugin {
               curr.replace("file:", ""),
             );
 
+            // Copy php files
             if (filePath.endsWith(".php")) {
               block.copyPatterns.push({
                 from: filePath,
@@ -162,9 +163,8 @@ class GutenbergWebpackPlugin {
                   `${blockJSON.name}/${path.basename(filePath)}`,
                 ),
               });
-            } else if (filePath.endsWith(".css")) {
-              // Do nothing, the file is already handled by webpack
-            } else {
+            } else if (filePath.endsWith(".js")) {
+              // Add js files to entries
               block.entries[
                 path.join(
                   this.outputPathPrefix,
