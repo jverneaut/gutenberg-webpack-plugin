@@ -1,7 +1,6 @@
 import GutenbergWebpackPlugin from "../index.js";
 
 export default {
-  mode: "development",
   entry: "./index.js",
 
   plugins: [
