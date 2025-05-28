@@ -103,6 +103,7 @@ class GutenbergWebpackPlugin {
       ...compiler.options.module.rules,
       {
         test: /\.(js|jsx)$/,
+        include: path.resolve(compiler.context, this.blocksFolderPath),
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
