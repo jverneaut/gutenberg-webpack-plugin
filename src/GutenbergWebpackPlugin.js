@@ -12,6 +12,7 @@ class GutenbergWebpackPlugin {
    * @param {string} options.outputPathPrefix The build output path prefix (default: "blocks")
    */
   constructor(blocksFolderPath, options = {}) {
+    this.isProduction = process.env.NODE_ENV === "production";
     this.blocksFolderPath = blocksFolderPath;
     this.outputPathPrefix =
       options.outputPathPrefix === undefined
@@ -59,6 +60,9 @@ class GutenbergWebpackPlugin {
           ...cssLoaders,
           {
             loader: "sass-loader",
+            options: {
+              sourceMap: !this.isProduction,
+            },
           },
         ],
       },
