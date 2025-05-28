@@ -31,6 +31,29 @@ class GutenbergWebpackPlugin {
       ...this.getEntries(blocks),
     };
 
+    // Split CSS into multiple files
+    compiler.options.optimization = {
+      ...compiler.options.optimization,
+      splitChunks: {
+        ...compiler.options.optimization.splitChunks,
+        cacheGroups: {
+          style: {
+            type: "css/mini-extract",
+            test: /[\\/]style(\.module)?\.(pc|sc|sa|c)ss$/,
+            chunks: "all",
+            enforce: true,
+            name(_, chunks, cacheGroupKey) {
+              const chunkName = chunks[0].name;
+              return `${path.dirname(
+                chunkName,
+              )}/${cacheGroupKey}-${path.basename(chunkName)}`;
+            },
+          },
+          default: false,
+        },
+      },
+    };
+
     // Set default path if not set
     if (!compiler.options.output.path) {
       compiler.options.output.path = path.resolve(compiler.context, "dist");
