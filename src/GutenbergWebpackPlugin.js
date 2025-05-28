@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import CopyPlugin from "copy-webpack-plugin";
 import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
+import MiniCSSExtractPlugin from "mini-css-extract-plugin";
 
 class GutenbergWebpackPlugin {
   /**
@@ -21,18 +22,62 @@ class GutenbergWebpackPlugin {
   apply(compiler) {
     const blocks = this.getBlocks(compiler.context);
 
+    // Add entries for found blocks
     compiler.options.entry = {
       ...compiler.options.entry,
       ...this.getEntries(blocks),
     };
 
+    // Add CSS/SASS rules
+    const cssLoaders = [
+      {
+        loader: MiniCSSExtractPlugin.loader,
+      },
+      {
+        loader: "css-loader",
+        options: {
+          importLoaders: 1,
+          sourceMap: !this.isProduction,
+          modules: {
+            auto: true,
+          },
+        },
+      },
+    ];
+
+    compiler.options.module.rules = [
+      ...compiler.options.module.rules,
+      {
+        test: /\.css$/,
+        include: path.resolve(compiler.context, this.blocksFolderPath),
+        use: cssLoaders,
+      },
+      {
+        test: /\.(sc|sa)ss$/,
+        include: path.resolve(compiler.context, this.blocksFolderPath),
+        use: [
+          ...cssLoaders,
+          {
+            loader: "sass-loader",
+          },
+        ],
+      },
+    ];
+
+    // Copy block files
     if (Object.keys(blocks).length) {
       new CopyPlugin({
         patterns: this.getCopyPatterns(blocks),
       }).apply(compiler);
     }
 
+    // Create *.asset.php files
     new DependencyExtractionWebpackPlugin().apply(compiler);
+
+    // Extract CSS files
+    new MiniCSSExtractPlugin({
+      filename: "[name].css",
+    }).apply(compiler);
   }
 
   getBlocks(basePath) {
@@ -73,6 +118,8 @@ class GutenbergWebpackPlugin {
                   `${blockJSON.name}/${path.basename(filePath)}`,
                 ),
               });
+            } else if (filePath.endsWith(".css")) {
+              // Do nothing, the file is already handled by webpack
             } else {
               block.entries[
                 path.join(
