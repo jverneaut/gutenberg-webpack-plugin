@@ -4,6 +4,8 @@ import path from "path";
 import CopyPlugin from "copy-webpack-plugin";
 import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
 import MiniCSSExtractPlugin from "mini-css-extract-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import RemoveEmptyScriptsPlugin from "webpack-remove-empty-scripts";
 
 class GutenbergWebpackPlugin {
   /**
@@ -28,6 +30,11 @@ class GutenbergWebpackPlugin {
       ...compiler.options.entry,
       ...this.getEntries(blocks),
     };
+
+    // Set default path if not set
+    if (!compiler.options.output.path) {
+      compiler.options.output.path = path.resolve(compiler.context, "dist");
+    }
 
     // Add CSS/SASS rules
     const cssLoaders = [
@@ -68,6 +75,13 @@ class GutenbergWebpackPlugin {
       },
     ];
 
+    // Clean output folder
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [
+        path.join(compiler.options.output.path, this.outputPathPrefix, "**/*"),
+      ],
+    }).apply(compiler);
+
     // Copy block files
     if (Object.keys(blocks).length) {
       new CopyPlugin({
@@ -82,6 +96,9 @@ class GutenbergWebpackPlugin {
     new MiniCSSExtractPlugin({
       filename: "[name].css",
     }).apply(compiler);
+
+    // Remove empty scripts (style.js, etc.)
+    new RemoveEmptyScriptsPlugin().apply(compiler);
   }
 
   getBlocks(basePath) {
