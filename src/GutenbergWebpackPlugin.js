@@ -97,7 +97,7 @@ class GutenbergWebpackPlugin {
                 `${blockJSON.name}/block.json`,
               ),
               transform(content) {
-                return JSON.stringify(JSON.parse(content));
+                return JSON.stringify(JSON.parse(content), null, 2);
               },
             },
           ],
