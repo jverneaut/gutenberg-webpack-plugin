@@ -20,13 +20,43 @@ eval("module.exports = /*#__PURE__*/JSON.parse('{\"$schema\":\"https://schemas.w
 
 /***/ }),
 
+/***/ "./blocks/example-static/edit.js":
+/*!***************************************!*\
+  !*** ./blocks/example-static/edit.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Edit)\n/* harmony export */ });\n/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ \"@wordpress/i18n\");\n/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ \"@wordpress/block-editor\");\n/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./editor.scss */ \"./blocks/example-static/editor.scss\");\n/**\n * Retrieves the translation of text.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/\n */\n\n\n/**\n * React hook that is used to mark the block wrapper element.\n * It provides all the necessary props like the class name.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops\n */\n\n\n/**\n * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.\n * Those files can contain any CSS code that gets applied to the editor.\n *\n * @see https://www.npmjs.com/package/@wordpress/scripts#using-css\n */\n\n\n/**\n * The edit function describes the structure of your block in the context of the\n * editor. This represents what the editor will render when the block is used.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit\n *\n * @return {Element} Element to render.\n */\nfunction Edit() {\n  return /*#__PURE__*/React.createElement(\"p\", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(\"Example Static – hello from the editor!\", \"example-static\"));\n}\n\n//# sourceURL=webpack://example/./blocks/example-static/edit.js?");
+
+/***/ }),
+
+/***/ "./blocks/example-static/editor.scss":
+/*!*******************************************!*\
+  !*** ./blocks/example-static/editor.scss ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://example/./blocks/example-static/editor.scss?");
+
+/***/ }),
+
 /***/ "./blocks/example-static/index.js":
 /*!****************************************!*\
   !*** ./blocks/example-static/index.js ***!
   \****************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ \"@wordpress/blocks\");\n/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ \"./blocks/example-static/style.scss\");\nObject(function webpackMissingModule() { var e = new Error(\"Cannot find module './edit'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }());\nObject(function webpackMissingModule() { var e = new Error(\"Cannot find module './save'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }());\n/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./block.json */ \"./blocks/example-static/block.json\");\n/**\n * Registers a new block provided a unique name and an object defining its behavior.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/\n */\n\n\n/**\n * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.\n * All files containing `style` keyword are bundled together. The code used\n * gets applied both to the front of your site and to the editor.\n *\n * @see https://www.npmjs.com/package/@wordpress/scripts#using-css\n */\n\n\n/**\n * Internal dependencies\n */\n\n\n\n\n/**\n * Every block starts by registering a new block type definition.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/\n */\n(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_3__.name, {\n  /**\n   * @see ./edit.js\n   */\n  edit: Object(function webpackMissingModule() { var e = new Error(\"Cannot find module './edit'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }()),\n  /**\n   * @see ./save.js\n   */\n  save: Object(function webpackMissingModule() { var e = new Error(\"Cannot find module './save'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }())\n});\n\n//# sourceURL=webpack://example/./blocks/example-static/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ \"@wordpress/blocks\");\n/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ \"./blocks/example-static/style.scss\");\n/* harmony import */ var _edit_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit.js */ \"./blocks/example-static/edit.js\");\n/* harmony import */ var _save_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save.js */ \"./blocks/example-static/save.js\");\n/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ \"./blocks/example-static/block.json\");\n/**\n * Registers a new block provided a unique name and an object defining its behavior.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/\n */\n\n\n/**\n * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.\n * All files containing `style` keyword are bundled together. The code used\n * gets applied both to the front of your site and to the editor.\n *\n * @see https://www.npmjs.com/package/@wordpress/scripts#using-css\n */\n\n\n/**\n * Internal dependencies\n */\n\n\n\n\n/**\n * Every block starts by registering a new block type definition.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/\n */\n(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {\n  /**\n   * @see ./edit.js\n   */\n  edit: _edit_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"],\n  /**\n   * @see ./save.js\n   */\n  save: _save_js__WEBPACK_IMPORTED_MODULE_3__[\"default\"]\n});\n\n//# sourceURL=webpack://example/./blocks/example-static/index.js?");
+
+/***/ }),
+
+/***/ "./blocks/example-static/save.js":
+/*!***************************************!*\
+  !*** ./blocks/example-static/save.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ save)\n/* harmony export */ });\n/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ \"@wordpress/block-editor\");\n/**\n * React hook that is used to mark the block wrapper element.\n * It provides all the necessary props like the class name.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops\n */\n\n\n/**\n * The save function defines the way in which the different attributes should\n * be combined into the final markup, which is then serialized by the block\n * editor into `post_content`.\n *\n * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save\n *\n * @return {Element} Element to render.\n */\nfunction save() {\n  return /*#__PURE__*/React.createElement(\"p\", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps.save(), \"Example Static – hello from the saved content!\");\n}\n\n//# sourceURL=webpack://example/./blocks/example-static/save.js?");
 
 /***/ }),
 
@@ -40,6 +70,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
 
 /***/ }),
 
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ ((module) => {
+
+eval("module.exports = window[\"wp\"][\"blockEditor\"];\n\n//# sourceURL=webpack://example/external_%5B%22wp%22,%22blockEditor%22%5D?");
+
+/***/ }),
+
 /***/ "@wordpress/blocks":
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
@@ -47,6 +87,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
 /***/ ((module) => {
 
 eval("module.exports = window[\"wp\"][\"blocks\"];\n\n//# sourceURL=webpack://example/external_%5B%22wp%22,%22blocks%22%5D?");
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+eval("module.exports = window[\"wp\"][\"i18n\"];\n\n//# sourceURL=webpack://example/external_%5B%22wp%22,%22i18n%22%5D?");
 
 /***/ })
 
@@ -109,6 +159,18 @@ eval("module.exports = window[\"wp\"][\"blocks\"];\n\n//# sourceURL=webpack://ex
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
 /******/ 		};
 /******/ 	})();
 /******/ 	

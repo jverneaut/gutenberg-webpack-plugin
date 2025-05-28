@@ -21,5 +21,5 @@
  */
 
 /* eslint-disable no-console */
-console.log( 'Hello World! (from my-plugin-example-dynamic block)' );
+console.log("Hello World! (from my-plugin-example-dynamic block)");
 /* eslint-enable no-console */
