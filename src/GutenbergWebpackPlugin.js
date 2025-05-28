@@ -154,7 +154,7 @@ class GutenbergWebpackPlugin {
               curr.replace("file:", ""),
             );
 
-            if (filePath.endsWith(".php") || filePath.endsWith(".twig")) {
+            if (filePath.endsWith(".php")) {
               block.copyPatterns.push({
                 from: filePath,
                 to: path.join(
