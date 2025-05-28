@@ -20,11 +20,13 @@
   },
   "dependencies": {
     "@wordpress/dependency-extraction-webpack-plugin": "^6.21.0",
+    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.2",
     "glob": "^11.0.1",
     "mini-css-extract-plugin": "^2.9.2",
     "sass": "^1.89.0",
-    "sass-loader": "^16.0.5"
+    "sass-loader": "^16.0.5",
+    "webpack-remove-empty-scripts": "^1.1.1"
   }
 }
