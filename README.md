@@ -1,17 +1,16 @@
 # GutenbergWebpackPlugin
 
-A lightweight, developer-friendly alternative to `@wordpress/scripts` that simplifies the setup and build process for custom Gutenberg blocks. It’s designed to integrate easily into any existing Webpack configuration with minimal boilerplate.
+A lightweight webpack plugin that simplifies the setup and build process for custom Gutenberg blocks. It’s designed to integrate easily into any existing Webpack configuration with minimal boilerplate.
 
-This plugin gets you up and running with Gutenberg block development with minimal effort. It also integrates nicely with my other package: [HTML To Gutenberg](https://github.com/jverneaut/html-to-gutenberg).
+It uses a lot of parts from [@worpress/scripts](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/).
+
+It also integrates nicely with my other package: [HTML To Gutenberg](https://github.com/jverneaut/html-to-gutenberg).
 
 ## Installation
 
 ```sh
 # Install GutenbergWebpackPlugin
 npm install --save-dev @jverneaut/gutenberg-webpack-plugin
-
-# Install Babel dependencies (if not already set up)
-npm install --save-dev @babel/core @babel/preset-env @babel/preset-react babel-loader
 
 # Install Webpack (if not already set up)
 npm install --save-dev webpack webpack-cli
@@ -24,29 +23,14 @@ npm install --save-dev webpack webpack-cli
 import GutenbergWebpackPlugin from "@jverneaut/gutenberg-webpack-plugin";
 
 export default {
-  mode: "development",
   entry: "./index.js", // your main app entry for non-Gutenberg stuff
 
   plugins: [
+    // "./blocks" is your blocks folder
     new GutenbergWebpackPlugin("./blocks", {
       outputPathPrefix: "blocks", // optional, default is "blocks"
     }),
   ],
-
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
-          },
-        },
-      },
-    ],
-  },
 };
 ```
 

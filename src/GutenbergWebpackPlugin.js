@@ -3,6 +3,9 @@ import fs from "fs";
 import path from "path";
 import CopyPlugin from "copy-webpack-plugin";
 import DependencyExtractionWebpackPlugin from "@wordpress/dependency-extraction-webpack-plugin";
+import MiniCSSExtractPlugin from "mini-css-extract-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import RemoveEmptyScriptsPlugin from "webpack-remove-empty-scripts";
 
 class GutenbergWebpackPlugin {
   /**
@@ -11,6 +14,7 @@ class GutenbergWebpackPlugin {
    * @param {string} options.outputPathPrefix The build output path prefix (default: "blocks")
    */
   constructor(blocksFolderPath, options = {}) {
+    this.isProduction = process.env.NODE_ENV === "production";
     this.blocksFolderPath = blocksFolderPath;
     this.outputPathPrefix =
       options.outputPathPrefix === undefined
@@ -21,18 +25,119 @@ class GutenbergWebpackPlugin {
   apply(compiler) {
     const blocks = this.getBlocks(compiler.context);
 
+    // Add entries for found blocks
     compiler.options.entry = {
       ...compiler.options.entry,
       ...this.getEntries(blocks),
     };
 
+    // Split CSS into multiple files
+    compiler.options.optimization = {
+      ...compiler.options.optimization,
+      splitChunks: {
+        ...compiler.options.optimization.splitChunks,
+        cacheGroups: {
+          style: {
+            type: "css/mini-extract",
+            test: /[\\/]style(\.module)?\.(pc|sc|sa|c)ss$/,
+            chunks: "all",
+            enforce: true,
+            name(_, chunks, cacheGroupKey) {
+              const chunkName = chunks[0].name;
+              return `${path.dirname(
+                chunkName,
+              )}/${cacheGroupKey}-${path.basename(chunkName)}`;
+            },
+          },
+          default: false,
+        },
+      },
+    };
+
+    // Set default path if not set
+    if (!compiler.options.output.path) {
+      compiler.options.output.path = path.resolve(compiler.context, "dist");
+    }
+
+    // Add CSS/SASS rules
+    const cssLoaders = [
+      {
+        loader: MiniCSSExtractPlugin.loader,
+      },
+      {
+        loader: "css-loader",
+        options: {
+          importLoaders: 1,
+          sourceMap: !this.isProduction,
+          modules: {
+            auto: true,
+          },
+        },
+      },
+    ];
+
+    compiler.options.module.rules = [
+      ...compiler.options.module.rules,
+      {
+        test: /\.css$/,
+        include: path.resolve(compiler.context, this.blocksFolderPath),
+        use: cssLoaders,
+      },
+      {
+        test: /\.(sc|sa)ss$/,
+        include: path.resolve(compiler.context, this.blocksFolderPath),
+        use: [
+          ...cssLoaders,
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: !this.isProduction,
+            },
+          },
+        ],
+      },
+    ];
+
+    // Add JS rules
+    compiler.options.module.rules = [
+      ...compiler.options.module.rules,
+      {
+        test: /\.(js|jsx)$/,
+        include: path.resolve(compiler.context, this.blocksFolderPath),
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
+      },
+    ];
+
+    // Clean output folder
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [
+        path.join(compiler.options.output.path, this.outputPathPrefix, "**/*"),
+      ],
+    }).apply(compiler);
+
+    // Copy block files
     if (Object.keys(blocks).length) {
       new CopyPlugin({
         patterns: this.getCopyPatterns(blocks),
       }).apply(compiler);
     }
 
+    // Create *.asset.php files
     new DependencyExtractionWebpackPlugin().apply(compiler);
+
+    // Extract CSS files
+    new MiniCSSExtractPlugin({
+      filename: "[name].css",
+    }).apply(compiler);
+
+    // Remove empty scripts (style.js, etc.)
+    new RemoveEmptyScriptsPlugin().apply(compiler);
   }
 
   getBlocks(basePath) {
@@ -52,7 +157,7 @@ class GutenbergWebpackPlugin {
                 `${blockJSON.name}/block.json`,
               ),
               transform(content) {
-                return JSON.stringify(JSON.parse(content));
+                return JSON.stringify(JSON.parse(content), null, 2);
               },
             },
           ],
@@ -65,7 +170,8 @@ class GutenbergWebpackPlugin {
               curr.replace("file:", ""),
             );
 
-            if (filePath.endsWith(".php") || filePath.endsWith(".twig")) {
+            // Copy php files
+            if (filePath.endsWith(".php")) {
               block.copyPatterns.push({
                 from: filePath,
                 to: path.join(
@@ -73,7 +179,8 @@ class GutenbergWebpackPlugin {
                   `${blockJSON.name}/${path.basename(filePath)}`,
                 ),
               });
-            } else {
+            } else if (filePath.endsWith(".js")) {
+              // Add js files to entries
               block.entries[
                 path.join(
                   this.outputPathPrefix,

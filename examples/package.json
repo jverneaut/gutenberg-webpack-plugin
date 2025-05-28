@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --watch",
+    "start": "webpack --watch --mode=development",
     "build": "webpack"
   },
   "keywords": [],
@@ -12,13 +12,8 @@
   "description": "",
   "type": "module",
   "dependencies": {
-    "@10up/block-components": "^1.20.0",
-    "@babel/core": "^7.26.10",
-    "@babel/preset-env": "^7.26.9",
-    "@babel/preset-react": "^7.26.3",
     "@wordpress/block-editor": "^14.16.0",
     "@wordpress/blocks": "^14.10.0",
-    "babel-loader": "^10.0.0",
     "webpack": "^5.99.0",
     "webpack-cli": "^6.0.1"
   }
