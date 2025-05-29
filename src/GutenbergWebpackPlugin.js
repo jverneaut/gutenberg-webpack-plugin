@@ -12,6 +12,8 @@ class GutenbergWebpackPlugin {
    * @param {string} blocksFolderPath The directory containing your blocks
    * @param {object} options
    * @param {string} options.outputPathPrefix The build output path prefix (default: "blocks")
+   * @param {string} options.disableCssLoaders Disable CSS loaders if you're config already has some
+   * @param {string} options.disableSassLoaders Disable SASS loaders if you're config already has some
    */
   constructor(blocksFolderPath, options = {}) {
     this.isProduction = process.env.NODE_ENV === "production";
@@ -20,6 +22,9 @@ class GutenbergWebpackPlugin {
       options.outputPathPrefix === undefined
         ? "blocks"
         : options.outputPathPrefix;
+
+    this.disableCssLoaders = options.disableCssLoaders ?? false;
+    this.disableSassLoaders = options.disableSassLoaders ?? false;
   }
 
   apply(compiler) {
@@ -60,21 +65,34 @@ class GutenbergWebpackPlugin {
     }
 
     // Add CSS/SASS rules
-    const cssLoaders = [
-      {
-        loader: MiniCSSExtractPlugin.loader,
-      },
-      {
-        loader: "css-loader",
-        options: {
-          importLoaders: 1,
-          sourceMap: !this.isProduction,
-          modules: {
-            auto: true,
+    const cssLoaders = this.disableCssLoaders
+      ? []
+      : [
+          {
+            loader: MiniCSSExtractPlugin.loader,
           },
-        },
-      },
-    ];
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1,
+              sourceMap: !this.isProduction,
+              modules: {
+                auto: true,
+              },
+            },
+          },
+        ];
+
+    const sassLoaders = this.disableSassLoaders
+      ? []
+      : [
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: !this.isProduction,
+            },
+          },
+        ];
 
     compiler.options.module.rules = [
       ...compiler.options.module.rules,
@@ -86,15 +104,7 @@ class GutenbergWebpackPlugin {
       {
         test: /\.(sc|sa)ss$/,
         include: path.resolve(compiler.context, this.blocksFolderPath),
-        use: [
-          ...cssLoaders,
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: !this.isProduction,
-            },
-          },
-        ],
+        use: [...cssLoaders, ...sassLoaders],
       },
     ];
 

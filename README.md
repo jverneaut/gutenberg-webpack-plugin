@@ -34,6 +34,17 @@ export default {
 };
 ```
 
+If you have issues making it work with an existing webpack config that is already setup to build CSS and SASS files, you can use the `disableCssLoaders` and `disableSassLoaders` options.
+
+```js
+new GutenbergWebpackPlugin("./blocks", {
+  disableCssLoaders: true,
+  disableScssLoaders: true,
+});
+```
+
+This will prevent conflicts between the two and should properly handle styles as long as your webpack config is standard enough.
+
 ## Block Structure
 
 Given an input folder that looks like this:
