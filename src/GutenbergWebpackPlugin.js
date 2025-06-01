@@ -73,6 +73,24 @@ class GutenbergWebpackPlugin {
       },
     );
 
+    compiler.options.externals = ({ request }, callback) => {
+      const WORDPRESS_NAMESPACE = "@wordpress/";
+      const BUNDLED_PACKAGES = [
+        "@wordpress/icons",
+        "@wordpress/interface",
+        "@wordpress/style-engine",
+      ];
+
+      if (
+        request.startsWith(WORDPRESS_NAMESPACE) &&
+        !BUNDLED_PACKAGES.includes(request)
+      ) {
+        return callback(null, request, "commonjs2");
+      }
+
+      return callback();
+    };
+
     // Split CSS into multiple files
     compiler.options.optimization = {
       ...compiler.options.optimization,
