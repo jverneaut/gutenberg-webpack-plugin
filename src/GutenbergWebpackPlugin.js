@@ -27,14 +27,51 @@ class GutenbergWebpackPlugin {
     this.disableSassLoaders = options.disableSassLoaders ?? false;
   }
 
-  apply(compiler) {
-    const blocks = this.getBlocks(compiler.context);
+  addEntries(compiler, compilation) {
+    const blocks = this.getBlocks(compilation.context);
+    const entries = this.getEntries(blocks);
 
-    // Add entries for found blocks
-    compiler.options.entry = {
-      ...compiler.options.entry,
-      ...this.getEntries(blocks),
-    };
+    Object.entries(entries).forEach(([key, value]) => {
+      const relativePath = path.relative(compilation.context, value);
+
+      const entry = path.join(compilation.context, relativePath);
+      const dependency = compilation.webpack.EntryPlugin.createDependency(
+        entry,
+        key,
+      );
+
+      compiler.hooks.make.tapAsync(
+        this.constructor.name,
+        (compilation, callback) => {
+          compilation.addEntry(compiler.context, dependency, key, (err) => {
+            callback(err);
+          });
+        },
+      );
+    });
+
+    if (Object.keys(blocks).length) {
+      new CopyPlugin({
+        patterns: this.getCopyPatterns(blocks),
+      }).apply(compiler);
+    }
+  }
+
+  apply(compiler) {
+    compiler.hooks.watchRun.tap(this.constructor.name, (compilation) => {
+      this.addEntries(compiler, compilation);
+    });
+
+    compiler.hooks.beforeRun.tap(this.constructor.name, (compilation) => {
+      this.addEntries(compiler, compilation);
+    });
+
+    compiler.hooks.afterCompile.tapPromise(
+      this.constructor.name,
+      async (compilation) => {
+        compilation.contextDependencies.add(this.blocksFolderPath);
+      },
+    );
 
     // Split CSS into multiple files
     compiler.options.optimization = {
@@ -131,13 +168,6 @@ class GutenbergWebpackPlugin {
       ],
     }).apply(compiler);
 
-    // Copy block files
-    if (Object.keys(blocks).length) {
-      new CopyPlugin({
-        patterns: this.getCopyPatterns(blocks),
-      }).apply(compiler);
-    }
-
     // Create *.asset.php files
     new DependencyExtractionWebpackPlugin().apply(compiler);
 
@@ -215,7 +245,7 @@ class GutenbergWebpackPlugin {
 
     for (const block of Object.values(blocks)) {
       for (const [key, value] of Object.entries(block.entries)) {
-        entries[key] = { import: [value] };
+        entries[key] = value;
       }
     }
 
