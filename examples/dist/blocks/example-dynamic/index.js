@@ -188,8 +188,8 @@ eval("module.exports = window[\"wp\"][\"i18n\"];\n\n//# sourceURL=webpack://exam
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"blocks/my-plugin/example-dynamic/index": 0,
-/******/ 			"blocks/my-plugin/example-dynamic/style-index": 0
+/******/ 			"blocks/example-dynamic/index": 0,
+/******/ 			"blocks/example-dynamic/style-index": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -239,7 +239,7 @@ eval("module.exports = window[\"wp\"][\"i18n\"];\n\n//# sourceURL=webpack://exam
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["blocks/my-plugin/example-dynamic/style-index"], () => (__webpack_require__("./blocks/example-dynamic/index.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["blocks/example-dynamic/style-index"], () => (__webpack_require__("./blocks/example-dynamic/index.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
