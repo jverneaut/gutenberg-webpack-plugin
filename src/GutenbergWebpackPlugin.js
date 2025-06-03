@@ -204,16 +204,17 @@ class GutenbergWebpackPlugin {
       .reduce((acc, curr) => {
         const blockJSON = JSON.parse(fs.readFileSync(curr, "utf-8"));
         const blockBasePath = path.dirname(curr);
+        const blockOutputPath = path.join(
+          this.outputPathPrefix,
+          path.basename(blockBasePath),
+        );
 
         const block = {
           entries: {},
           copyPatterns: [
             {
               from: curr,
-              to: path.join(
-                this.outputPathPrefix,
-                `${blockJSON.name}/block.json`,
-              ),
+              to: path.join(blockOutputPath, "block.json"),
               transform(content) {
                 return JSON.stringify(JSON.parse(content), null, 2);
               },
@@ -232,18 +233,12 @@ class GutenbergWebpackPlugin {
             if (filePath.endsWith(".php")) {
               block.copyPatterns.push({
                 from: filePath,
-                to: path.join(
-                  this.outputPathPrefix,
-                  `${blockJSON.name}/${path.basename(filePath)}`,
-                ),
+                to: path.join(blockOutputPath, path.basename(filePath)),
               });
             } else if (filePath.endsWith(".js")) {
               // Add js files to entries
               block.entries[
-                path.join(
-                  this.outputPathPrefix,
-                  `/${blockJSON.name}/${path.basename(filePath).split(".")[0]}`,
-                )
+                path.join(blockOutputPath, path.basename(filePath, ".js"))
               ] = filePath;
             }
           }
